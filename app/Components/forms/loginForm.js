@@ -8,14 +8,12 @@ export default function LoginForm() {
     //get the credentials from the form
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log(formData);
     try {
       const response = await signIn("credentials", {
         username: formData.get("username"),
         password: formData.get("password"),
         callbackUrl: "/admin",
       });
-      console.log(response);
       if (response.status === 401) {
         alert("Incorrect credentials. Please try again.");
       }

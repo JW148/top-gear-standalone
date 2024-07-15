@@ -6,16 +6,13 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { PiMinusCircleFill } from "react-icons/pi";
 import { editListingSQL } from "@/app/lib/actions";
+import SortableGrid from "../dnd/SortableGrid";
 
 export default function EditListing({ details }) {
   const [files, setFiles] = useState(details.images);
   const [newFiles, setNewFiles] = useState(null);
   const [isSelected, setIsSelected] = useState(details.available);
   const ref = useRef(null);
-
-  const handleRemoveImage = (file) => {
-    setFiles((oldArr) => oldArr.filter((item) => item !== file));
-  };
 
   return (
     <Card className=" m-4 md:w-[500px] w-[90vw] p-4 rounded-sm">
@@ -67,7 +64,6 @@ export default function EditListing({ details }) {
           multiple
           accept=".jpg, .jpeg, .png"
           onChange={(e) => {
-            console.log(e.target.files);
             setNewFiles(e.target.files);
           }}
         />
@@ -75,29 +71,7 @@ export default function EditListing({ details }) {
         <h4 className="self-start font-semibold text-slate-500">
           Existing Files
         </h4>
-
-        <div className="flex flex-row overflow-hidden justify-center flex-wrap mt-4">
-          {files.map((file) => (
-            <div className="relative" key={file}>
-              <Button
-                isIconOnly
-                className="absolute -top-2 -right-2 bg-transparent p-0 m-0 "
-                aria-label="Delete listing button"
-                onPress={() => handleRemoveImage(file)}
-              >
-                <PiMinusCircleFill className="size-6 text-danger-600" />
-              </Button>
-              <Image
-                key={file}
-                alt="Card background"
-                className="m-2 object-cover max-h-[70px]"
-                src={`/images/${file}`}
-                width={100}
-                height={100}
-              />
-            </div>
-          ))}
-        </div>
+        <SortableGrid items={files} setItems={setFiles} />
         {newFiles && (
           <h4 className="self-start font-semibold text-slate-500">New Files</h4>
         )}

@@ -32,7 +32,6 @@ export default function ListingForm() {
           multiple
           accept=".jpg, .jpeg, .png"
           onChange={(e) => {
-            console.log(e.target.files);
             setFiles(e.target.files);
           }}
         />

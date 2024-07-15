@@ -17,13 +17,10 @@ const handler = NextAuth({
         password: {},
       },
       async authorize(credentials, req) {
-        console.log(credentials);
         //get the credentials from the request
         const { username, password } = credentials;
         //get the user from the DB by username
         const user = await getUserSQL(username);
-
-        console.log(user);
 
         //return null if the user doesn't exist
         if (!user) return null;

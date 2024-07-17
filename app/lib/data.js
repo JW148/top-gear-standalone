@@ -2,6 +2,8 @@
 
 import mysql from "mysql2/promise";
 import { unstable_noStore as noStore } from "next/cache";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 async function createConnection() {
   try {
@@ -19,6 +21,11 @@ async function createConnection() {
 }
 
 export async function getAdminDataSQL() {
+  //double check the user is logged in
+  const session = await getServerSession(authOptions);
+  //if not, return early and don't complete the function
+  if (session === null) return;
+
   //noStore() Next.js API used to opt out of static rendering (making the components dynamic)
   noStore();
 
@@ -57,6 +64,7 @@ export async function getShowroomDataSQL() {
       SELECT l.listingID, l.model, l.price, l.colour, l.year, l.mileage, l.description, l.available, l.createdAt, JSON_ARRAYAGG(images.imageID) AS images FROM listings as l
       INNER JOIN images
       ON l.listingID=images.listingID
+      WHERE l.available=1
       GROUP BY l.listingID;
       `;
 

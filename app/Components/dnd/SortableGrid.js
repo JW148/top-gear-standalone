@@ -37,7 +37,7 @@ export default function SortableGrid({ items, setItems }) {
     }
 
     setActiveID(null);
-  }, []);
+  });
 
   const handleDragCancel = useCallback(() => {
     setActiveID(null);
